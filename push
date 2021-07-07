@@ -1,0 +1,26 @@
+#! /usr/bin/env bash
+################################
+#
+#  Author: 	Abbas Abdulmalik
+#  Created:	March 30, 2016
+#  Modified:	April 16, 2021
+#  Original:	push (name may have changed)
+#  Purpose:	A single command to commit and push
+#					local master git repo to remote origin (github)
+#  Note:		Requires a memo as arguments
+#
+################################````````
+if [ "${1}" = "" ];
+ then 
+  echo
+  echo "$(basename ${0}) requires a 'memo' as command line arguments"
+  echo Example: $(basename ${0}) changed color of content div
+  echo
+  exit $?
+fi
+################################
+git config --global push.default simple
+git config --global credential.helper "cache --timeout=3600"
+git add --all
+git commit -am"`echo "${@}"`"
+git push
