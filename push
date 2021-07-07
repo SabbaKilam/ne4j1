@@ -20,7 +20,7 @@ if [ "${1}" = "" ];
 fi
 ################################
 git config --global push.default simple
-git config --global credential.helper "cache --timeout=3600"
+git config credential.helper 'cache --timeout=3600'
 git add --all
 git commit -am"`echo "${@}"`"
 git push
