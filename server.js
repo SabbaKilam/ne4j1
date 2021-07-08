@@ -7,13 +7,13 @@ require('dotenv-expand')(env);
 const port = 3000;
 const host = `localhost`;
 
-const uri = process.env.DB_CONN;
+const uri = process.env.DB_URI;
 const user = process.env.DB_USER;
 const password = process.env.DB_PSWD;
 
 const neo4j = require('neo4j-driver')
 const auth = neo4j.auth.basic(user, password)
-const driver = neo4j.driver( uri, auth )
+const conn = neo4j.driver( uri, auth )
 
 tryNeo(); 
 
@@ -25,12 +25,12 @@ http.createServer((req, res)=>{
 });
 
 async function tryNeo(){
-    const session = driver.session()
+    const session = conn.session()
     const personName = 'Alice'
     
     try {
       const result = await session.run(
-        'CREATE (a:Person {name: $name}) RETURN a',
+        'MERGE (a:Person {name: $name}) RETURN a',
         { name: personName }
       )
     
@@ -43,5 +43,5 @@ async function tryNeo(){
     }
     
     // on application exit:
-    await driver.close()
+    await conn.close()
 }
